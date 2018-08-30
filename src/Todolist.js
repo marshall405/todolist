@@ -22,6 +22,9 @@ export default class ToDoList extends React.Component {
     list : [],
     currentValue : '',
   }
+  buttonStyle = {
+    width: 30,
+  }
   addItem(item){
     const { list } = this.state;
     const newList = [...list];
@@ -66,26 +69,34 @@ export default class ToDoList extends React.Component {
         { 
           this.state.list.map((item, index) => {
             return (
+              
               <ListItem button={true} divider={true} key={index}>
+
                 <ListItemText> 
                   {item} 
                 </ListItemText>
-                <Button className='done' onClick={() => this.handleDone(index)}>
+
+                <Button style={this.buttonStyle} className='done' onClick={() => this.handleDone(index)}>
                   <DoneIcon/>
                 </Button>
-                <Button className='edit' onClick={() => this.handleEdit(index)}>
+
+                <Button style={this.buttonStyle} className='edit' onClick={() => this.handleEdit(index)}>
                   <EditIcon />
                 </Button>
-                <Button className='delete' onClick={() => this.handleDelete(index)}>
+
+                <Button style={this.buttonStyle} className='delete' onClick={() => this.handleDelete(index)}>
                   <DeleteIcon/>
                 </Button>
+
               </ListItem>
+              
             ) 
           })
         }
       </List>
     )
   }
+
   render(){
     let addButton = () => {
       if(this.state.currentValue.trim()){
@@ -95,6 +106,7 @@ export default class ToDoList extends React.Component {
             variant='contained' 
             size='small' 
             type='submit'
+            style={this.buttonStyle}
           >
             <AddIcon />
           </Button>
@@ -105,13 +117,17 @@ export default class ToDoList extends React.Component {
       <div className='listContainer'>
         <h1> To Do List </h1>
         <form onSubmit={(e) => this.handleSubmit(e)}>
+          
           <Input 
             type='text' 
             placeholder='add item' 
             onChange={(e) => this.handleOnChange(e)} 
+            style={{marginRight : 10}}
           />
+          
           {/* only render add button when user starts typing */}
-          {addButton()}           
+          {addButton()}   
+      
         </form>
         {this.renderList()}
       </div>
