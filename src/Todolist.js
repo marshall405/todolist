@@ -44,20 +44,21 @@ export default class ToDoList extends React.Component {
   } 
   handleDelete(index){
     const newList = this.state.list.slice();
-    let removedItems;
     newList.splice(index, 1);
     this.setState({list : newList});
   }
   handleDone(index){
     console.log(this.state.list[index])
-    
-    
   }
   handleEdit(index){
     const changeItem = prompt(`Edit ${this.state.list[index]}`);
     const newList = this.state.list.slice();
-    newList[index] = changeItem;
-    this.setState({list : newList});
+    if(changeItem){
+      if(changeItem.trim()){
+        newList[index] = changeItem.trim();
+        this.setState({list : newList});
+      }
+    }
   }
   renderList() {
     return (
@@ -69,13 +70,13 @@ export default class ToDoList extends React.Component {
                 <ListItemText> 
                   {item} 
                 </ListItemText>
-                <Button className='done' variant='contained' onClick={() => this.handleDone(index)}>
+                <Button className='done' onClick={() => this.handleDone(index)}>
                   <DoneIcon/>
                 </Button>
-                <Button className='edit' variant='contained' onClick={() => this.handleEdit(index)}>
+                <Button className='edit' onClick={() => this.handleEdit(index)}>
                   <EditIcon />
                 </Button>
-                <Button className='delete' variant='contained' onClick={() => this.handleDelete(index)}>
+                <Button className='delete' onClick={() => this.handleDelete(index)}>
                   <DeleteIcon/>
                 </Button>
               </ListItem>
@@ -86,6 +87,20 @@ export default class ToDoList extends React.Component {
     )
   }
   render(){
+    let addButton = () => {
+      if(this.state.currentValue.trim()){
+        return (
+          <Button 
+            className='add' 
+            variant='contained' 
+            size='small' 
+            type='submit'
+          >
+            <AddIcon />
+          </Button>
+        )
+      }
+    }
     return (
       <div className='listContainer'>
         <h1> To Do List </h1>
@@ -95,14 +110,8 @@ export default class ToDoList extends React.Component {
             placeholder='add item' 
             onChange={(e) => this.handleOnChange(e)} 
           />
-          <Button 
-            className='add' 
-            variant='contained' 
-            size='small' 
-            type='submit'
-          >
-            <AddIcon />
-          </Button>
+          {/* only render add button when user starts typing */}
+          {addButton()}           
         </form>
         {this.renderList()}
       </div>

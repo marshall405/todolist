@@ -10,14 +10,7 @@ ul li {
     padding: 0 !important;
 }
 
-
-/*                          Material UI overrides                           */
-
-/* remove padding from list items  */
-.MuiListItem-root-61 {
-    padding: 5px 25px !important;
-}
-
+/*                      List Buttons             */
 .done:hover {
     color:#3FBF4A;
 }
@@ -26,4 +19,22 @@ ul li {
 }
 .add:hover {
     color: #303f9f;
+}
+.edit:hover {
+    color: #303f9f;
+}
+
+
+
+
+
+/*                          Material UI overrides                           */
+
+/* remove padding from list items  */
+.MuiListItem-root-61 {
+    padding: 5px 25px !important;
+}
+
+.MuiButton-root-103, .MuiButton-root-18 {
+    min-width: 44px !important;
 }
