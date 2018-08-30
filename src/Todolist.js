@@ -18,6 +18,7 @@ import './styles/todolist.css';
 
 
 export default class ToDoList extends React.Component {
+
   state = {
     list : [],
     currentValue : '',
@@ -25,6 +26,7 @@ export default class ToDoList extends React.Component {
   buttonStyle = {
     width: 30,
   }
+
   addItem(item){
     const { list } = this.state;
     const newList = [...list];
@@ -50,8 +52,15 @@ export default class ToDoList extends React.Component {
     newList.splice(index, 1);
     this.setState({list : newList});
   }
-  handleDone(index){
-    console.log(this.state.list[index])
+  handleDone(e, index){
+    const button = e;
+
+    button.parentNode.children[0].children[0].style.textDecoration = 'line-through';
+    button.parentNode.children[1].children[0].style.color = 'green';
+   
+    console.log(button.parentNode);
+    return;
+
   }
   handleEdit(index){
     const changeItem = prompt(`Edit ${this.state.list[index]}`);
@@ -70,13 +79,17 @@ export default class ToDoList extends React.Component {
           this.state.list.map((item, index) => {
             return (
               
-              <ListItem button={true} divider={true} key={index}>
+              <ListItem 
+                button={true} 
+                divider={true} 
+                key={index} 
+              >
 
                 <ListItemText> 
                   {item} 
                 </ListItemText>
-
-                <Button style={this.buttonStyle} className='done' onClick={() => this.handleDone(index)}>
+               
+                <Button style={this.buttonStyle} className='done' onClick={(e) => this.handleDone(e.currentTarget, index)}>
                   <DoneIcon/>
                 </Button>
 
@@ -87,7 +100,7 @@ export default class ToDoList extends React.Component {
                 <Button style={this.buttonStyle} className='delete' onClick={() => this.handleDelete(index)}>
                   <DeleteIcon/>
                 </Button>
-
+                
               </ListItem>
               
             ) 
@@ -98,7 +111,7 @@ export default class ToDoList extends React.Component {
   }
 
   render(){
-    let addButton = () => {
+    let AddButton = () => {
       if(this.state.currentValue.trim()){
         return (
           <Button 
@@ -126,7 +139,7 @@ export default class ToDoList extends React.Component {
           />
           
           {/* only render add button when user starts typing */}
-          {addButton()}   
+          {AddButton()}  
       
         </form>
         {this.renderList()}
