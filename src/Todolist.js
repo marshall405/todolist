@@ -103,7 +103,7 @@ export default class ToDoList extends React.Component {
                 button={true} 
                 divider={true} 
                 key={index} >
-                
+
                 <ListItemText className={ listItem.complete ? 'complete' : ''}> 
                   {listItem.text} 
                 </ListItemText>
@@ -142,7 +142,7 @@ export default class ToDoList extends React.Component {
   render(){
     return (
       <div className='listContainer'>
-        <h1> To Do List </h1>
+        
         <form onSubmit={(e) => this.handleOnSubmit(e)}>
           
           <Input 

@@ -2,7 +2,10 @@
 h1, form {
     text-align: center;
 }
-
+h1 {
+    color: #303f9f;
+    text-decoration-line: underline;
+}
 
 /* List Items */
 ul li {
