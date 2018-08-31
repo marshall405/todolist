@@ -9,8 +9,14 @@ ul li {
     margin: 0 !important;
     padding: 0 !important;
 }
-
+.complete {
+    text-decoration-line: line-through;
+}
+.complete > span{
+    color: #3FBF4A !important;
+}
 /*                      List Buttons             */
+
 .done:hover {
     color:#3FBF4A;
 }

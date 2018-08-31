@@ -23,14 +23,15 @@ export default class ToDoList extends React.Component {
     list : [],
     currentValue : '',
   }
-  buttonStyle = {
-    width: 30,
-  }
 
   addItem(item){
-    const { list } = this.state;
-    const newList = [...list];
-    newList.push(item);
+    const newList = [...this.state.list];
+    const listItem = {
+      text : item,
+      complete : false,
+      id : this.state.list.length + 1,
+    }
+    newList.push(listItem);
     this.setState({ 
       list : newList,
       currentValue : ''
@@ -39,65 +40,93 @@ export default class ToDoList extends React.Component {
   handleOnChange(e){
     return this.setState({currentValue : e.target.value})
   }
-  handleSubmit(e){
+  handleOnSubmit(e){
     e.preventDefault();
     const item = this.state.currentValue.trim();
     if(item){
       this.addItem(item);
     }
-    e.target.reset();
   } 
-  handleDelete(index){
+  handleDelete(listItem){
     const newList = this.state.list.slice();
+    const index = this.state.list.indexOf(listItem);
     newList.splice(index, 1);
     this.setState({list : newList});
   }
-  handleDone(e, index){
-    const button = e;
-
-    button.parentNode.children[0].children[0].style.textDecoration = 'line-through';
-    button.parentNode.children[1].children[0].style.color = 'green';
-   
-    console.log(button.parentNode);
-    return;
-
+  handleDone(id){
+    const newList = this.state.list.map( listItem => {
+      if(listItem.id === id){
+        listItem.complete = listItem.complete === false ? true : false;
+      }
+      return listItem;
+    });
+    this.setState({
+      list : newList
+    })
   }
-  handleEdit(index){
-    const changeItem = prompt(`Edit ${this.state.list[index]}`);
+  handleEdit(listItem){
+    const changeItem = prompt(`Edit ${listItem.text}`);
     const newList = this.state.list.slice();
+    const index = newList.indexOf(listItem);
     if(changeItem){
       if(changeItem.trim()){
-        newList[index] = changeItem.trim();
+        newList[index].text = changeItem.trim();
         this.setState({list : newList});
       }
     }
   }
+  renderAddButton() {
+    if(this.state.currentValue.trim()){
+      return (
+        <Button 
+          className='add' 
+          variant='contained' 
+          size='small' 
+          type='submit'
+          style={this.buttonStyle}
+        >
+          <AddIcon />
+        </Button>
+      )
+    }
+    return null;
+  }
   renderList() {
+
     return (
       <List>
         { 
-          this.state.list.map((item, index) => {
+          this.state.list.map((listItem, index) => {
             return (
               
               <ListItem 
                 button={true} 
                 divider={true} 
-                key={index} 
-              >
-
-                <ListItemText> 
-                  {item} 
+                key={index} >
+                
+                <ListItemText className={ listItem.complete ? 'complete' : ''}> 
+                  {listItem.text} 
                 </ListItemText>
                
-                <Button style={this.buttonStyle} className='done' onClick={(e) => this.handleDone(e.currentTarget, index)}>
-                  <DoneIcon/>
+                <Button 
+                  style={{ width: 30}} 
+                  className={`done ${listItem.complete ? 'complete' : ''}`} 
+                  onClick={() => this.handleDone(listItem.id)}>
+                  <DoneIcon />
                 </Button>
 
-                <Button style={this.buttonStyle} className='edit' onClick={() => this.handleEdit(index)}>
+                <Button 
+                  style={{width: 30}} 
+                  disabled={ listItem.complete ? true : false } 
+                  className='edit' 
+                  onClick={() => this.handleEdit(listItem)}>
                   <EditIcon />
                 </Button>
 
-                <Button style={this.buttonStyle} className='delete' onClick={() => this.handleDelete(index)}>
+                <Button 
+                  style={{width: 30}} 
+                  className='delete' 
+                  onClick={() => this.handleDelete(listItem)}>
                   <DeleteIcon/>
                 </Button>
                 
@@ -111,35 +140,21 @@ export default class ToDoList extends React.Component {
   }
 
   render(){
-    let AddButton = () => {
-      if(this.state.currentValue.trim()){
-        return (
-          <Button 
-            className='add' 
-            variant='contained' 
-            size='small' 
-            type='submit'
-            style={this.buttonStyle}
-          >
-            <AddIcon />
-          </Button>
-        )
-      }
-    }
     return (
       <div className='listContainer'>
         <h1> To Do List </h1>
-        <form onSubmit={(e) => this.handleSubmit(e)}>
+        <form onSubmit={(e) => this.handleOnSubmit(e)}>
           
           <Input 
             type='text' 
             placeholder='add item' 
             onChange={(e) => this.handleOnChange(e)} 
+            value = {this.state.currentValue}
             style={{marginRight : 10}}
           />
           
           {/* only render add button when user starts typing */}
-          {AddButton()}  
+          {this.renderAddButton()}  
       
         </form>
         {this.renderList()}
