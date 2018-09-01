@@ -22,19 +22,23 @@ export default class ToDoList extends React.Component {
   state = {
     list : [],
     currentValue : '',
+    id : 0
   }
 
   addItem(item){
     const newList = [...this.state.list];
+    let newId = this.state.id;
     const listItem = {
       text : item,
       complete : false,
-      id : this.state.list.length + 1,
+      id : newId
     }
+    newId += 1;
     newList.push(listItem);
     this.setState({ 
       list : newList,
-      currentValue : ''
+      currentValue : '',
+      id : newId
     });
   }
   handleOnChange(e){
@@ -83,8 +87,7 @@ export default class ToDoList extends React.Component {
           variant='contained' 
           size='small' 
           type='submit'
-          style={this.buttonStyle}
-        >
+          style={{width: 30}}>
           <AddIcon />
         </Button>
       )
@@ -96,13 +99,13 @@ export default class ToDoList extends React.Component {
     return (
       <List>
         { 
-          this.state.list.map((listItem, index) => {
+          this.state.list.map(listItem => {
             return (
               
               <ListItem 
                 button={true} 
                 divider={true} 
-                key={index} >
+                key={listItem.id} >
 
                 <ListItemText className={ listItem.complete ? 'complete' : ''}> 
                   {listItem.text} 
