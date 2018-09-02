@@ -16,6 +16,11 @@ import DeleteIcon from '@material-ui/icons/Delete';
 // import own css
 import './styles/todolist.css';
 
+// NOTES
+// disable click on item if completed!!!!!!!!
+
+
+
 
 export default class ToDoList extends React.Component {
 
@@ -69,7 +74,7 @@ export default class ToDoList extends React.Component {
     })
   }
   handleEdit(listItem){
-    const changeItem = prompt(`Edit ${listItem.text}`);
+    const changeItem = prompt(`Edit ${listItem.text}`, listItem.text);
     const newList = this.state.list.slice();
     const index = newList.indexOf(listItem);
     if(changeItem){
@@ -102,12 +107,11 @@ export default class ToDoList extends React.Component {
           this.state.list.map(listItem => {
             return (
               
-              <ListItem 
-                button={true} 
+              <ListItem  
                 divider={true} 
                 key={listItem.id} >
 
-                <ListItemText className={ listItem.complete ? 'complete' : ''}> 
+                <ListItemText className={ listItem.complete ? 'complete' : ''} onClick={() => this.handleEdit(listItem)}> 
                   {listItem.text} 
                 </ListItemText>
                
@@ -116,14 +120,6 @@ export default class ToDoList extends React.Component {
                   className={`done ${listItem.complete ? 'complete' : ''}`} 
                   onClick={() => this.handleDone(listItem.id)}>
                   <DoneIcon />
-                </Button>
-
-                <Button 
-                  style={{width: 30}} 
-                  disabled={ listItem.complete ? true : false } 
-                  className='edit' 
-                  onClick={() => this.handleEdit(listItem)}>
-                  <EditIcon />
                 </Button>
 
                 <Button 
@@ -153,7 +149,7 @@ export default class ToDoList extends React.Component {
             placeholder='add item' 
             onChange={(e) => this.handleOnChange(e)} 
             value = {this.state.currentValue}
-            style={{marginRight : 10}}
+            
           />
           
           {/* only render add button when user starts typing */}
