@@ -36,11 +36,11 @@ export default class ToDoList extends React.Component {
     });
   }
   handleOnChange(e){
-    return this.setState({currentValue : e.target.value.trim()})
+    return this.setState({currentValue : e.target.value})
   }
   handleOnSubmit(e){
     e.preventDefault();
-    const item = this.state.currentValue;
+    const item = this.state.currentValue.trim();
     if(item){
       this.addItem(item);
     }
@@ -74,7 +74,7 @@ export default class ToDoList extends React.Component {
     }
   }
   renderAddButton() {
-    if(this.state.currentValue){
+    if(this.state.currentValue.trim()){
       return (
         <Button 
           className='add' 
