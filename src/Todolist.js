@@ -1,26 +1,15 @@
 import React from 'react';
+import { ListOfItems } from './List';
 
 // import Material-UI
 import Input from '@material-ui/core/Input';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
-import DoneIcon from '@material-ui/icons/Done';
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
+
 
 
 // import own css
 import './styles/todolist.css';
-
-// NOTES
-// disable click on item if completed!!!!!!!!
-
-
-
 
 export default class ToDoList extends React.Component {
 
@@ -47,22 +36,22 @@ export default class ToDoList extends React.Component {
     });
   }
   handleOnChange(e){
-    return this.setState({currentValue : e.target.value})
+    return this.setState({currentValue : e.target.value.trim()})
   }
   handleOnSubmit(e){
     e.preventDefault();
-    const item = this.state.currentValue.trim();
+    const item = this.state.currentValue;
     if(item){
       this.addItem(item);
     }
   } 
-  handleDelete(listItem){
+  handleDeleteItem(listItem){
     const newList = this.state.list.slice();
     const index = this.state.list.indexOf(listItem);
     newList.splice(index, 1);
     this.setState({list : newList});
   }
-  handleDone(id){
+  handleCompleteItem(id){
     const newList = this.state.list.map( listItem => {
       if(listItem.id === id){
         listItem.complete = listItem.complete === false ? true : false;
@@ -73,7 +62,7 @@ export default class ToDoList extends React.Component {
       list : newList
     })
   }
-  handleEdit(listItem){
+  handleEditItem(listItem){
     const changeItem = prompt(`Edit ${listItem.text}`, listItem.text);
     const newList = this.state.list.slice();
     const index = newList.indexOf(listItem);
@@ -85,7 +74,7 @@ export default class ToDoList extends React.Component {
     }
   }
   renderAddButton() {
-    if(this.state.currentValue.trim()){
+    if(this.state.currentValue){
       return (
         <Button 
           className='add' 
@@ -99,45 +88,7 @@ export default class ToDoList extends React.Component {
     }
     return null;
   }
-  renderList() {
-
-    return (
-      <List>
-        { 
-          this.state.list.map(listItem => {
-            return (
-              
-              <ListItem  
-                divider={true} 
-                key={listItem.id} >
-
-                <ListItemText className={ listItem.complete ? 'complete' : ''} onClick={() => this.handleEdit(listItem)}> 
-                  {listItem.text} 
-                </ListItemText>
-               
-                <Button 
-                  style={{ width: 30}} 
-                  className={`done ${listItem.complete ? 'complete' : ''}`} 
-                  onClick={() => this.handleDone(listItem.id)}>
-                  <DoneIcon />
-                </Button>
-
-                <Button 
-                  style={{width: 30}} 
-                  className='delete' 
-                  onClick={() => this.handleDelete(listItem)}>
-                  <DeleteIcon/>
-                </Button>
-                
-              </ListItem>
-              
-            ) 
-          })
-        }
-      </List>
-    )
-  }
-
+  
   render(){
     return (
       <div className='listContainer'>
@@ -156,7 +107,13 @@ export default class ToDoList extends React.Component {
           {this.renderAddButton()}  
       
         </form>
-        {this.renderList()}
+
+        <ListOfItems
+          editItem={this.handleEditItem.bind(this)} 
+          deleteItem={this.handleDeleteItem.bind(this)} 
+          completeItem={this.handleCompleteItem.bind(this)} 
+          listItems={this.state.list}/>
+
       </div>
     );
   }
