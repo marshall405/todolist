@@ -6,7 +6,7 @@ import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 
-
+import TextField from '@material-ui/core/TextField';
 
 // import own css
 import './styles/todolist.css';
@@ -36,13 +36,13 @@ export default class ToDoList extends React.Component {
     });
   }
   handleOnChange(e){
-    return this.setState({currentValue : e.target.value.trim()})
+    return this.setState({currentValue : e.target.value})
   }
   handleOnSubmit(e){
     e.preventDefault();
     const item = this.state.currentValue;
     if(item){
-      this.addItem(item);
+      this.addItem(item.trim());
     }
   } 
   handleDeleteItem(listItem){
@@ -95,14 +95,14 @@ export default class ToDoList extends React.Component {
         
         <form onSubmit={(e) => this.handleOnSubmit(e)}>
           
-          <Input 
-            type='text' 
-            placeholder='add item' 
-            onChange={(e) => this.handleOnChange(e)} 
-            value = {this.state.currentValue}
-            
-          />
-          
+        <TextField
+          id="with-placeholder"
+          label="To Do Item"
+          // placeholder="add item"
+          margin="normal"
+          onChange={(e) => this.handleOnChange(e)} 
+          value = {this.state.currentValue}
+        />
           {/* only render add button when user starts typing */}
           {this.renderAddButton()}  
       
