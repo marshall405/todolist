@@ -1,0 +1,66 @@
+
+h1, form {
+    text-align: center;
+}
+
+h1 {
+    color: #303f9f;
+    text-decoration-line: underline;
+}
+
+/* List Items */
+ul li {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+.complete {
+    text-decoration-line: line-through;
+}
+.complete > span{
+    color: #3FBF4A !important;
+}
+ul > li:hover {
+    background-color: rgba(0, 0, 0, 0.08);
+}
+ul > li > div:hover {
+    cursor: pointer;
+   
+}
+ul > li > div {
+    border-radius: 4px;
+    padding: 8px 16px !important;
+}
+
+
+
+
+
+/*                      List Buttons             */
+
+.done:hover {
+    color:#3FBF4A;
+}
+.delete:hover {
+    color: red;
+}
+.add:hover {
+    color: #303f9f;
+}
+.edit:hover {
+    color: #303f9f;
+}
+
+
+
+
+
+/*                          Material UI overrides                           */
+
+/* remove padding from list items  */
+.MuiListItem-root-61 {
+    padding: 5px 25px !important;
+}
+
+.MuiButton-root-103, .MuiButton-root-18 {
+    min-width: 44px !important;
+}
